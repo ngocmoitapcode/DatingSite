@@ -1,6 +1,6 @@
 # DatingSite
 Meet, match and date 
-## Thành viên nhóm
+# Team members
 1. Phạm Bích Ngọc
 2. Vũ Thanh Lâm
 3. Lẻo Tiến Thắng
