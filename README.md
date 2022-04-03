@@ -7,4 +7,4 @@ Meet, match and date
 | Vũ Thanh Lâm | 20020434 |
 | Lẻo Tiến Thắng | 	20020348 |
 # Database model
-![databasemodel](diagram.png)
+![databasemodel](diagram.PNG)
