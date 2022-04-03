@@ -6,3 +6,5 @@ Meet, match and date
 | Phạm Bích Ngọc | 20020454 |
 | Vũ Thanh Lâm | 20020434 |
 | Lẻo Tiến Thắng | 	20020348 |
+# Database model
+![databasemodel](diagram.png)
