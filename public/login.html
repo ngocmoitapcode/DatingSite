@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="keywords" content="FakeMG, youtuber">
+
+    <!--CCS Stylesheet-->
+    <link rel="stylesheet" type="text/css" href="./signup.css">
+
+    <!--Iconscout cdn-->
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
+
+    <!--Google fonts (Montserrat)-->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+
+    <title>Document</title>
+</head>
+
+<body>
+    <header>
+        <div class="container header__container">
+            <div class="header__up">
+                <h1>Log In</h1>
+            </div>
+
+            <div class="header__down">
+                <form action="/login" method="POST">
+                    <label for="username">Username:</label><br>
+                    <input type="text" id="username" name="username" required autocomplete="on"><br>
+
+                    <label for="password">Password:</label><br>
+                    <input type="password" id="password" name="password" required><br><br>
+
+                    <input type="submit" value="Log In">
+                </form>
+            </div>
+        </div>
+    </header>
+</body>
+
+</html>
