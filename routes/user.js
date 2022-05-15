@@ -3,8 +3,8 @@ const router = express.Router();
 const path = require('path');
 var database = require('../models/database');
 
-// middleware function to check for logged-in users
-var sessionChecker = (req, res, next) => {
+// login rồi thì không được truy cập
+var redirectToHomePage = (req, res, next) => {
     if (req.session.user && req.cookies.user_sid) {
         res.redirect("/");
     } else {
@@ -13,7 +13,7 @@ var sessionChecker = (req, res, next) => {
 };
 
 router.route('/login')
-    .get(sessionChecker, (req, res) => {
+    .get(redirectToHomePage, (req, res) => {
         res.sendFile(path.resolve("./public/login.html"));
     })
     .post(async (req, res) => {
@@ -35,7 +35,7 @@ router.route('/login')
     })
 
 router.route('/signup')
-    .get(sessionChecker, (req, res) => {
+    .get(redirectToHomePage, (req, res) => {
         res.sendFile(path.resolve("./public/signup.html"));
     })
     .post(async (req, res) => {

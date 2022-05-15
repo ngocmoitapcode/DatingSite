@@ -51,4 +51,25 @@ let createAccount = function (users) {
     });
 }
 
-module.exports = { checkUserEmail: checkUserEmail, checkPassword, createAccount };
+let recommendUsers = function (user_gender, user_cometchat_uid) {
+    let target_gender;
+    if (user_gender === 'Male') {
+        target_gender = 'Female';
+    } else {
+        target_gender = 'Male';
+    }
+
+    return new Promise(function (resolve) {
+        // ko hiện người mình từng quẹt hoặc người đã quẹt tới mình và mình đã accept
+        const sqlScript = "SELECT * FROM user_account WHERE user_gender = ? AND (user_cometchat_uid NOT IN (SELECT match_request_to FROM match_request WHERE match_request_from = ?) AND user_cometchat_uid NOT IN (SELECT match_request_from FROM match_request WHERE match_request_to = ? AND match_request_status = ?))";
+
+        mysql_pool.query(sqlScript, [target_gender, user_cometchat_uid, user_cometchat_uid, 1], function (error, results, fields) {
+            if (error) {
+                throw error;
+            }
+            resolve(results);
+        });
+    })
+}
+
+module.exports = { checkUserEmail, checkPassword, createAccount, recommendUsers };

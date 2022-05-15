@@ -35,6 +35,7 @@ app.use((req, res, next) => {
 });
 
 app.use(require('./routes/user'));
+app.use('/user', require('./routes/matching'));
 
 app.listen(8080, () => {
   console.log(`App is listening on port 8080`)
