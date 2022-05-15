@@ -72,4 +72,60 @@ let recommendUsers = function (user_gender, user_cometchat_uid) {
     })
 }
 
-module.exports = { checkUserEmail, checkPassword, createAccount, recommendUsers };
+// kiểm tra 'from' đã like 'to' chưa
+let checkRequest = function (match_request_from, match_request_to) {
+    return new Promise(function (resolve) {
+        const sqlScript = "SELECT * FROM match_request WHERE match_request_from = ? AND match_request_to = ?";
+
+        mysql_pool.query(sqlScript, [match_request_from, match_request_to], function (error, results, fields) {
+            if (error) {
+                throw error;
+            }
+            resolve(results);
+        });
+    });
+}
+
+// kiểm tra 'to' đã like 'from' chưa
+let checkMatchRequest = function (match_request_from, match_request_to) {
+    return new Promise(function (resolve) {
+        const sqlScript = "SELECT * FROM match_request WHERE match_request_from = ? AND match_request_to = ?";
+
+        mysql_pool.query(sqlScript, [match_request_to, match_request_from], function (error, results, fields) {
+            if (error) {
+                throw error;
+            }
+            resolve(results);
+        });
+    });
+}
+
+let updateMatchRequest = function (match_request_id) {
+    return new Promise(function (resolve) {
+        const updateMatchRequestSql = "UPDATE match_request SET match_request_status = ?, accepted_date = ? WHERE id = ?";
+
+        mysql_pool.query(updateMatchRequestSql, [1, new Date(), match_request_id], function (error, results, fields) {
+            if (error) {
+                throw error;
+            }
+            resolve(results);
+        });
+    });
+}
+
+let insertNewRequest = function (match_request_from, match_request_to, match_request_sender, match_request_receiver) {
+    return new Promise(function (resolve) {
+        
+        const request = [[match_request_from, match_request_to, match_request_sender, match_request_receiver, 0]];
+        const sqlScript = "INSERT INTO match_request (match_request_from, match_request_to, match_request_sender, match_request_receiver, match_request_status) VALUES ?";
+
+        mysql_pool.query(sqlScript, [request], function (error, results, fields) {
+            if (error) {
+                throw error;
+            }
+            resolve(results);
+        });
+    });
+}
+
+module.exports = { checkUserEmail, checkPassword, createAccount, recommendUsers, checkMatchRequest, updateMatchRequest, insertNewRequest };
