@@ -3,7 +3,7 @@ const app = express();
 var cookieParser = require("cookie-parser");
 var bodyParser = require("body-parser");
 var session = require("express-session");
-var { checkUserName, checkPassword, createAccount } = require('./models/User');
+var { checkUserEmail, checkPassword, createAccount } = require('./models/User');
 
 app.use(express.static('./public'));
 
@@ -54,20 +54,21 @@ app.route('/login')
     res.sendFile(__dirname + "/public/login.html");
   })
   .post(async (req, res) => {
-    const { username, password } = req.body;
-    let results = await checkUserName(username);
+    // get user data from req.body
+    const { email, password } = req.body;
 
-    // if username doesn't exist or password is incorrect
+    // verify user data
+    let results = await checkUserEmail(email);
     if (!results || !checkPassword(results, password)) {
-      console.log('Username or password is incorrect');
+      console.log('Email or password is incorrect');
       return res.redirect("/login");
     }
 
     // save user's data in session memory
-    req.session.user = { user_id: results[0].user_id, username };
-    console.log(`Welcome ${username}`);
+    req.session.user = { user_cometchat_uid: results[0].user_cometchat_uid, user_full_name: results[0].user_full_name, user_gender: results[0].user_gender };
+    console.log(`Welcome ${results[0].user_full_name}`);
 
-    res.redirect('/');
+    return res.redirect('/');
   })
 
 app.route('/signup')
@@ -75,27 +76,31 @@ app.route('/signup')
     res.sendFile(__dirname + "/public/signup.html");
   })
   .post(async (req, res) => {
-    const { username, password } = req.body;
+    // get user data from req.body
+    let { email, password, fullname, age, avatar, gender } = req.body;
+    avatar = 'test_path';
 
-    //if username already existed
-    if (await checkUserName(username)) {
-      console.log('Username already existed');
+    // verify user data
+    if (await checkUserEmail(email)) {
+      console.log('Email already existed');
       return res.redirect('/signup');
     }
+    
+    //create and save user's data in session memory
+    const users = [email, password, fullname, age, avatar, gender];
 
-    //save user's data in session memory
-    req.session.user = { user_id: await createAccount(username, password), username };
+    req.session.user = { user_cometchat_uid: await createAccount(users), user_full_name: fullname, user_gender: gender };
     console.log(`Account created`);
-    console.log(`Welcome ${username}`);
+    console.log(`Welcome ${fullname}`);
 
-    res.redirect('/');
+    return res.redirect('/');
   })
 
 // route for user logout
 app.get("/logout", (req, res) => {
   if (req.session.user && req.cookies.user_sid) {
+    console.log(`Goodbye ${req.session.user.user_full_name}`);
     res.clearCookie("user_sid");
-    console.log(`Goodbye ${req.session.user.username}`)
     res.redirect("/");
   } else {
     res.redirect("/login");

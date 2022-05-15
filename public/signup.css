@@ -125,14 +125,13 @@ input {
 /* ============================== HEADER PART ============================== */
 header {
     position: relative;
-    top: 5rem;
     height: 70vh;
     margin-bottom: 5rem;
 }
 
 .header__container {
     display: grid;
-    grid-template-rows: 1fr 1fr;
+    grid-template-rows: 0.8fr 1fr;
     align-items: center;
     justify-content: center;
 }

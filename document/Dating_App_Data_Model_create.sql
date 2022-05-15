@@ -1,6 +1,8 @@
 -- Created by Vertabelo (http://vertabelo.com)
 -- Last modification date: 2022-04-03 02:14:42.844
 
+Create DATABASE tinder;
+use tinder;
 -- tables
 -- Table: block_user
 CREATE TABLE block_user (
