@@ -3,7 +3,6 @@ const app = express();
 var cookieParser = require("cookie-parser");
 var bodyParser = require("body-parser");
 var session = require("express-session");
-var { checkUserEmail, checkPassword, createAccount } = require('./models/User');
 
 app.use(express.static('./public'));
 
@@ -35,77 +34,7 @@ app.use((req, res, next) => {
   next();
 });
 
-// middleware function to check for logged-in users
-var sessionChecker = (req, res, next) => {
-  if (req.session.user && req.cookies.user_sid) {
-    res.redirect("/");
-  } else {
-    next();
-  }
-};
-
-// route for Home-Page
-app.get("/", sessionChecker, (req, res) => {
-  res.redirect("/login");
-});
-
-app.route('/login')
-  .get(sessionChecker, (req, res) => {
-    res.sendFile(__dirname + "/public/login.html");
-  })
-  .post(async (req, res) => {
-    // get user data from req.body
-    const { email, password } = req.body;
-
-    // verify user data
-    let results = await checkUserEmail(email);
-    if (!results || !checkPassword(results, password)) {
-      console.log('Email or password is incorrect');
-      return res.redirect("/login");
-    }
-
-    // save user's data in session memory
-    req.session.user = { user_cometchat_uid: results[0].user_cometchat_uid, user_full_name: results[0].user_full_name, user_gender: results[0].user_gender };
-    console.log(`Welcome ${results[0].user_full_name}`);
-
-    return res.redirect('/');
-  })
-
-app.route('/signup')
-  .get(sessionChecker, (req, res) => {
-    res.sendFile(__dirname + "/public/signup.html");
-  })
-  .post(async (req, res) => {
-    // get user data from req.body
-    let { email, password, fullname, age, avatar, gender } = req.body;
-    avatar = 'test_path';
-
-    // verify user data
-    if (await checkUserEmail(email)) {
-      console.log('Email already existed');
-      return res.redirect('/signup');
-    }
-    
-    //create and save user's data in session memory
-    const users = [email, password, fullname, age, avatar, gender];
-
-    req.session.user = { user_cometchat_uid: await createAccount(users), user_full_name: fullname, user_gender: gender };
-    console.log(`Account created`);
-    console.log(`Welcome ${fullname}`);
-
-    return res.redirect('/');
-  })
-
-// route for user logout
-app.get("/logout", (req, res) => {
-  if (req.session.user && req.cookies.user_sid) {
-    console.log(`Goodbye ${req.session.user.user_full_name}`);
-    res.clearCookie("user_sid");
-    res.redirect("/");
-  } else {
-    res.redirect("/login");
-  }
-});
+app.use(require('./routes/user'));
 
 app.listen(8080, () => {
   console.log(`App is listening on port 8080`)
