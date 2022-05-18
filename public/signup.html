@@ -30,7 +30,7 @@
             </div>
 
             <div class="header__down">
-                <form action="/signup" method="POST">
+                <form action="/signup" method="POST"  enctype="multipart/form-data">
                     <label for="email">Email:</label><br>
                     <input type="email" id="email" name="email" required autocomplete="on"><br>
 
@@ -42,6 +42,9 @@
 
                     <label for="age">Age:</label><br>
                     <input type="number" id="age" name="age" required><br>
+
+                    <label for="signup__avatar" id="signup__avatar-label">Choose Avatar:</label><br>
+                    <input type="file" id="signup__avatar" name="avatar" class="hide" required /><br>
 
                     <label for="gender">Gender:</label>
                     <select id="gender" name="gender" required>
