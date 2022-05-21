@@ -28,6 +28,14 @@ const transformRecommendedUsers = (users) => {
     return users;
 }
 
+router.route('/info')
+    .get(redirectToHomePage, (req, res) => {
+        const { user_gender, user_cometchat_uid } = req.session.user;
+        if (user_gender && user_cometchat_uid) {
+            res.status(200).jsonp([{ user_gender, user_cometchat_uid }]);
+        }
+    })
+
 router.route('/recommend')
     .get(redirectToHomePage, async (req, res) => {
         const { user_gender, user_cometchat_uid } = req.session.user;
