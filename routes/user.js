@@ -75,7 +75,7 @@ router.route('/signup')
         //create and save user's data in session memory
         const users = [email, password, fullname, age, avatar, gender];
 
-        req.session.user = { user_cometchat_uid: await database.createAccount(users), user_full_name: fullname, user_gender: gender };
+        req.session.user = { user_cometchat_uid: await database.createAccount(users), user_full_name: fullname, user_gender: gender, user_avatar: avatar };
         console.log(`Account created`);
         console.log(`Welcome ${fullname}`);
 

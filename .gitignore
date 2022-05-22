@@ -98,6 +98,7 @@ Thumbs.db
 *.key
 *.pem
 *.env
+config.js
 
 # --------------------------------------------------------
 # BEGIN Explictly Allowed Files (i.e. do NOT ignore these)

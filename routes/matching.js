@@ -30,9 +30,9 @@ const transformRecommendedUsers = (users) => {
 
 router.route('/info')
     .get(redirectToHomePage, (req, res) => {
-        const { user_gender, user_cometchat_uid } = req.session.user;
+        const { user_gender, user_cometchat_uid, user_avatar, user_full_name } = req.session.user;
         if (user_gender && user_cometchat_uid) {
-            res.status(200).jsonp([{ user_gender, user_cometchat_uid }]);
+            res.status(200).jsonp({ user_gender, user_cometchat_uid, user_avatar, user_full_name });
         }
     })
 
