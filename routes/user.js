@@ -28,7 +28,23 @@ const storage = multer.diskStorage({
     },
 });
 
-const upload = multer({ storage: storage });
+// chỉ lưu file nếu user info valid
+const fileFilter = async (req, file, cb) => {
+    // get user email from req.body
+    const { email } = req.body;
+
+    // verify user email
+    if (await database.checkUserEmail(email)) {
+        return cb('Email already existed');
+    }
+
+    cb(null, true);
+};
+
+const upload = multer({
+    storage: storage,
+    fileFilter: fileFilter
+}).single('avatar');
 
 //===================Route===================//
 
@@ -45,14 +61,16 @@ router.route('/login')
         let results = await database.checkUserEmail(email);
         if (!results || !database.checkPassword(results, password)) {
             console.log('Email or password is incorrect');
-            return res.redirect("/login");
+            res.status(200).jsonp({ message: "Your email or password is incorrect" });
+            return;
         }
 
         // save user's data in session memory
         req.session.user = { user_cometchat_uid: results[0].user_cometchat_uid, user_full_name: results[0].user_full_name, user_gender: results[0].user_gender };
         console.log(`Welcome ${results[0].user_full_name}`);
 
-        return res.redirect('/');
+        // send session data to client
+        res.status(200).jsonp(req.session.user);
     })
 
 //route for signup
@@ -60,26 +78,29 @@ router.route('/signup')
     .get(redirectToHomePage, (req, res) => {
         res.sendFile(path.resolve("./public/signup.html"));
     })
-    .post(upload.single("avatar"), async (req, res) => {
-        // get user data from req.body
-        const { email, password, fullname, age, gender } = req.body;
+    .post((req, res) => {
+        upload(req, res, async (err) => {
+            // verify user data
+            if (err) {
+                res.status(200).jsonp({ message: err });
+                return;
+            }
 
-        const avatar = `/img/${req.file.filename}`;
+            // get user data from req.body
+            const { email, password, fullname, age, gender } = req.body;
 
-        // verify user data
-        if (await database.checkUserEmail(email)) {
-            console.log('Email already existed');
-            return res.redirect('/signup');
-        }
+            const avatar = `/img/${req.file.filename}`;
 
-        //create and save user's data in session memory
-        const users = [email, password, fullname, age, avatar, gender];
+            //create and save user's data in session memory
+            const users = [email, password, fullname, age, avatar, gender];
 
-        req.session.user = { user_cometchat_uid: await database.createAccount(users), user_full_name: fullname, user_gender: gender, user_avatar: avatar };
-        console.log(`Account created`);
-        console.log(`Welcome ${fullname}`);
+            req.session.user = { user_cometchat_uid: await database.createAccount(users), user_full_name: fullname, user_gender: gender, user_avatar: avatar };
+            console.log(`Account created`);
+            console.log(`Welcome ${fullname}`);
 
-        return res.redirect('/');
+            // send session data to client
+            res.status(200).jsonp(req.session.user);
+        });
     })
 
 //route for logout

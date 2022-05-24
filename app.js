@@ -1,16 +1,20 @@
 const express = require('express');
 const app = express();
 var cookieParser = require("cookie-parser");
+const cors = require("cors");
 var bodyParser = require("body-parser");
 var session = require("express-session");
 
 app.use(express.static('./public'));
 
 // initialize body-parser to parse incoming parameters requests to req.body
+app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 // initialize cookie-parser to allow us access the cookies stored in the browser.
 app.use(cookieParser());
+
+app.use(cors());
 
 // initialize express-session to allow us track the logged-in user across sessions.
 app.use(

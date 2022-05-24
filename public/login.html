@@ -30,18 +30,23 @@
             </div>
 
             <div class="header__down">
-                <form action="/login" method="POST">
-                    <label for="email">Email:</label><br>
-                    <input type="email" id="email" name="email" required autocomplete="on"><br>
+                <label for="email">Email:</label><br>
+                <input type="email" id="email" name="email" required autocomplete="on"><br>
 
-                    <label for="password">Password:</label><br>
-                    <input type="password" id="password" name="password" required autocomplete="on"><br><br>
+                <label for="password">Password:</label><br>
+                <input type="password" id="password" name="password" required autocomplete="on"><br><br>
 
-                    <input type="submit" value="Log In">
-                </form>
+                <button class="btn" id="submit">
+                    Login
+                </button>
             </div>
         </div>
     </header>
+    <script defer src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script type="text/javascript" src="https://unpkg.com/@cometchat-pro/chat@3.0.6/CometChat.js"></script>
+
+    <script src="./js/config.js"></script>
+    <script src="./js/login.js"></script>
 </body>
 
 </html>

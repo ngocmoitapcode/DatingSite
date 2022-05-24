@@ -30,7 +30,6 @@
             </div>
 
             <div class="header__down">
-                <form action="/signup" method="POST" enctype="multipart/form-data">
                     <label for="email">Email:</label><br>
                     <input type="email" id="email" name="email" required autocomplete="on"><br>
 
@@ -43,8 +42,8 @@
                     <label for="age">Age:</label><br>
                     <input type="number" id="age" name="age" required><br>
 
-                    <label for="signup__avatar" id="signup__avatar-label">Choose Avatar:</label><br>
-                    <input type="file" id="signup__avatar" name="avatar" class="hide" required /><br>
+                    <label for="avatar" id="signup__avatar-label">Choose Avatar:</label><br>
+                    <input type="file" id="avatar" name="avatar" class="hide" required /><br>
 
                     <label for="gender">Gender:</label>
                     <select id="gender" name="gender" required>
@@ -52,11 +51,17 @@
                         <option value="Female">Female</option>
                     </select><br><br>
 
-                    <input type="submit" value="Sign up">
-                </form>
+                    <button class="btn" id="submit">
+                        Sign Up
+                    </button>
             </div>
         </div>
     </header>
+    <script defer src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script type="text/javascript" src="https://unpkg.com/@cometchat-pro/chat@3.0.6/CometChat.js"></script>
+
+    <script src="./js/config.js"></script>
+    <script src="./js/login.js"></script>
 </body>
 
 </html>
