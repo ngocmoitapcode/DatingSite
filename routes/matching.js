@@ -55,7 +55,9 @@ router.route('/request')
             // kiểm tra 'to' đã like 'from' chưa
             if (matchRequest && matchRequest.length !== 0) {
                 // nếu 'to' đã like 'from' rồi thì match
-                await database.updateMatchRequest(matchRequest[0].id);
+                if (await database.updateMatchRequest(matchRequest[0].id)) {
+                    return res.status(200).jsonp({ match_request_status: 1 });
+                };
             } else {
                 // nếu 'to' chưa like 'from' thì tạo request mới
                 database.insertNewRequest(matchRequestFrom, matchRequestTo, matchRequestSender, matchRequestReceiver);
