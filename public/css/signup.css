@@ -49,6 +49,12 @@ section h2 {
     margin-bottom: 4rem;
 }
 
+.center {
+    margin: auto;
+    text-align: center;
+    position: relative;
+}
+
 /* ============================== HEADING ELEMENT ============================== */
 h1,
 h2,

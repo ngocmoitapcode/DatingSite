@@ -4,8 +4,8 @@ var cookieParser = require("cookie-parser");
 const cors = require("cors");
 var bodyParser = require("body-parser");
 var session = require("express-session");
+const path = require("path")
 
-app.use(express.static('./public'));
 
 // initialize body-parser to parse incoming parameters requests to req.body
 app.use(bodyParser.json());
@@ -37,6 +37,21 @@ app.use((req, res, next) => {
   }
   next();
 });
+
+// chưa login thì không được truy cập
+var redirectToLoginPage = (req, res, next) => {
+  if (!req.session.user && !req.cookies.user_sid) {
+    res.redirect("/login");
+  } else {
+    next();
+  }
+};
+
+app.get('/', redirectToLoginPage, (req, res) => {
+  res.sendFile(path.join(__dirname, './public', 'index.html'));
+})
+
+app.use(express.static('./public'));
 
 app.use(require('./routes/user'));
 app.use('/user', require('./routes/matching'));
