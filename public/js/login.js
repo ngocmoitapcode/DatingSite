@@ -76,11 +76,20 @@ let createAccount = function (res) {
                 (user) => {
                     console.log("User created", user);
 
-                    // store logged in user in the local storage.
-                    localStorage.setItem("auth", JSON.stringify({ ...user, gender: res.data.user_gender }));
-
-                    // redirect to home page.
-                    window.location.href = "/";
+                    CometChat.login(res.data.user_cometchat_uid, config.CometChatAuthKey).then(
+                        (loggedInUser) => {
+                            console.log("Login Successful:", { loggedInUser });
+        
+                            // store logged in user in the local storage.
+                            localStorage.setItem("auth", JSON.stringify({ ...loggedInUser, gender: res.data.user_gender }));
+        
+                            // redirect to home page.
+                            window.location.href = "/";
+                        },
+                        (error) => {
+                            console.log("Some Error Occured", { error });
+                        }
+                    );
                 },
                 (error) => {
                     console.log("Some Error Occured", { error });
