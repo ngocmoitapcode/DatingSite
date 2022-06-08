@@ -7,7 +7,7 @@ var session = require("express-session");
 const path = require("path")
 
 
-// initialize body-parser to parse incoming parameters requests to req.body
+// initialize body-parser to parse incoming parameters requests to req.bod
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
